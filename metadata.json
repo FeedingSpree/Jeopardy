@@ -1,0 +1,6 @@
+{
+  "name": "Live Jeopardy",
+  "description": "A real-time multiplayer Jeopardy game with an interactive board, customizable categories, Youtube video integration, and live buzzers.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

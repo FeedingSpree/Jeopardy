@@ -1,0 +1,20 @@
+{
+  "entities": {
+    "Game": {
+      "title": "Game",
+      "description": "The game state",
+      "type": "object",
+      "properties": {
+        "status": {
+          "type": "string"
+        }
+      }
+    }
+  },
+  "firestore": {
+    "/games/{gameId}": {
+      "schema": "Game",
+      "description": "Game room"
+    }
+  }
+}

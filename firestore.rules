@@ -1,0 +1,16 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Catch-all
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    match /games/{gameId} {
+      // In this party game, players and hosts don't have authenticated accounts,
+      // so we allow open access to the games collection. 
+      // A more robust implementation would use anonymous auth and validate schemas.
+      allow read, write: if true;
+    }
+  }
+}
