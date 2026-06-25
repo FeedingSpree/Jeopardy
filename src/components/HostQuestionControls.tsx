@@ -5,9 +5,10 @@ import { closeQuestion, resolveBuzz } from '../lib/game';
 
 interface Props {
   gameState: GameState;
+  onLeaveHost: () => void;
 }
 
-export function HostQuestionControls({ gameState }: Props) {
+export function HostQuestionControls({ gameState, onLeaveHost }: Props) {
   // Find current question details
   let currentCat = null;
   let currentQ = null;
@@ -56,14 +57,15 @@ export function HostQuestionControls({ gameState }: Props) {
 
         <div className="w-full bg-[#0B1953] border-4 border-[#1E3A8A] rounded-xl p-12 shadow-2xl flex flex-col items-center justify-center text-center relative overflow-hidden shrink-0 mt-8 min-h-[300px]">
           {currentQ.videoUrl ? (
-            <div className="w-full aspect-video rounded overflow-hidden max-w-2xl bg-black/50 mx-auto pointer-events-none border border-[#1E3A8A]">
+            <div className="w-full aspect-video rounded overflow-hidden max-w-2xl bg-black/50 mx-auto border border-[#1E3A8A]">
               <ReactPlayer 
                 {...{
                   url: currentQ.videoUrl,
                   playing: true,
-                  controls: false,
+                  controls: true,
                   width: "100%",
-                  height: "100%"
+                  height: "100%",
+                  className: "mx-auto"
                 } as any}
               />
             </div>

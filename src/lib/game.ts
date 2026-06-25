@@ -38,6 +38,10 @@ export const claimHost = async (hostId: string) => {
   await updateDoc(gameDocRef, { hostSocketId: hostId });
 };
 
+export const releaseHost = async () => {
+  await updateDoc(gameDocRef, { hostSocketId: null });
+};
+
 export const updateBoard = async (categories: Category[]) => {
   await updateDoc(gameDocRef, { categories });
 };
@@ -75,7 +79,7 @@ export const closeQuestion = async (categories: Category[], currentQuestionId: s
 
       // also clear buzzedAt for everyone
       for (const p in data.players) {
-        data.players[p].buzzedAt = undefined;
+        delete data.players[p].buzzedAt;
       }
 
       transaction.update(gameDocRef, {
@@ -96,7 +100,7 @@ export const resolveBuzz = async (correct: boolean, categories: Category[], curr
     if (!data.players[buzzedPlayerId]) return;
 
     if (correct) {
-      data.players[buzzedPlayerId].score += points;
+      data.players[buzzedPlayerId].score += Number(points);
       // mark answered
       const newCategories = categories.map(cat => ({
         ...cat,
@@ -106,14 +110,14 @@ export const resolveBuzz = async (correct: boolean, categories: Category[], curr
       data.status = 'board';
       data.currentQuestionId = null;
     } else {
-      data.players[buzzedPlayerId].score -= points;
+      data.players[buzzedPlayerId].score -= Number(points);
       // return to question so others can buzz
       data.status = 'question';
     }
 
     data.buzzedPlayerId = null;
     for (const p in data.players) {
-      data.players[p].buzzedAt = undefined;
+      delete data.players[p].buzzedAt;
     }
 
     transaction.set(gameDocRef, data);

@@ -5,9 +5,10 @@ import { openQuestion, resetGame } from '../lib/game';
 
 interface Props {
   gameState: GameState;
+  onLeaveHost: () => void;
 }
 
-export function HostBoard({ gameState }: Props) {
+export function HostBoard({ gameState, onLeaveHost }: Props) {
   const handleOpenQuestion = (questionId: string) => {
     openQuestion(questionId);
   };
@@ -25,6 +26,12 @@ export function HostBoard({ gameState }: Props) {
           <h1 className="text-2xl font-black text-[#FFD700] tracking-tighter">PRO JEOPARDY <span className="text-white font-normal opacity-50">|</span> HOST CONSOLE</h1>
         </div>
         <div className="flex gap-4 items-center">
+          <button 
+            onClick={onLeaveHost}
+            className="px-4 py-1.5 border border-red-500/30 text-red-400 hover:bg-red-500/10 rounded-md text-sm font-bold uppercase"
+          >
+            Leave Host
+          </button>
           <button 
             onClick={handleReset}
             className="px-4 py-1.5 border border-red-500/30 text-red-400 hover:bg-red-500/10 rounded-md text-sm font-bold uppercase"

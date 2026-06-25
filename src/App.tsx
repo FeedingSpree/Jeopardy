@@ -3,7 +3,7 @@ import { GameState } from './types';
 import { HostScreen } from './components/HostScreen';
 import { PlayerScreen } from './components/PlayerScreen';
 import { motion } from 'motion/react';
-import { subscribeToGame, initializeGameDoc, joinAsPlayer, claimHost } from './lib/game';
+import { subscribeToGame, initializeGameDoc, joinAsPlayer, claimHost, releaseHost } from './lib/game';
 import { v4 as uuidv4 } from 'uuid';
 
 export default function App() {
@@ -34,6 +34,11 @@ export default function App() {
   const handleJoinAsHost = async () => {
     await claimHost(myId);
     setRole('host');
+  };
+
+  const handleLeaveHost = async () => {
+    await releaseHost();
+    setRole(null);
   };
 
   const handleJoinAsPlayer = async (e: React.FormEvent) => {
@@ -88,7 +93,7 @@ export default function App() {
   }
 
   if (role === 'host') {
-    return <HostScreen gameState={gameState} />;
+    return <HostScreen gameState={gameState} onLeaveHost={handleLeaveHost} />;
   }
 
   return <PlayerScreen gameState={gameState} playerId={myId} />;

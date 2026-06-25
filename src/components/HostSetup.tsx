@@ -7,9 +7,10 @@ import { updateBoard, startGame } from '../lib/game';
 
 interface Props {
   gameState: GameState;
+  onLeaveHost: () => void;
 }
 
-export function HostSetup({ gameState }: Props) {
+export function HostSetup({ gameState, onLeaveHost }: Props) {
   const [categories, setCategories] = useState<Category[]>(gameState.categories.length ? gameState.categories : [
     {
       id: uuidv4(),
@@ -87,6 +88,12 @@ export function HostSetup({ gameState }: Props) {
             <h1 className="text-2xl font-black text-[#FFD700] tracking-tighter">PRO JEOPARDY <span className="text-white font-normal opacity-50">|</span> HOST SETUP</h1>
           </div>
           <div className="flex gap-4 items-center">
+            <button 
+              onClick={onLeaveHost}
+              className="px-4 py-1.5 bg-red-900/50 hover:bg-red-600 text-white rounded-md font-bold text-sm transition-colors"
+            >
+              LEAVE HOST
+            </button>
             <button 
               onClick={handleStart}
               className="px-4 py-1.5 bg-[#FFD700] text-[#060B28] rounded-md font-bold text-sm"
