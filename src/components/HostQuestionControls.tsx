@@ -1,6 +1,5 @@
 import { GameState } from '../types';
 import { ArrowLeft, Check, X } from 'lucide-react';
-import ReactPlayer from 'react-player';
 import { closeQuestion, resolveBuzz } from '../lib/game';
 
 interface Props {
@@ -58,16 +57,28 @@ export function HostQuestionControls({ gameState, onLeaveHost }: Props) {
         <div className="w-full bg-[#0B1953] border-4 border-[#1E3A8A] rounded-xl p-12 shadow-2xl flex flex-col items-center justify-center text-center relative overflow-hidden shrink-0 mt-8 min-h-[300px]">
           {currentQ.videoUrl ? (
             <div className="w-full aspect-video rounded overflow-hidden max-w-2xl bg-black/50 mx-auto border border-[#1E3A8A]">
-              <ReactPlayer 
-                {...{
-                  url: currentQ.videoUrl,
-                  playing: true,
-                  controls: true,
-                  width: "100%",
-                  height: "100%",
-                  className: "mx-auto"
-                } as any}
-              />
+              {(() => {
+                const url = currentQ.videoUrl;
+                const ytMatch = url.match(/(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=))([^&?#]+)/);
+                const ytId = ytMatch ? ytMatch[1] : null;
+                if (ytId) {
+                  return (
+                    <iframe
+                      className="w-full h-full"
+                      src={`https://www.youtube.com/embed/${ytId}`}
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                      allowFullScreen
+                    ></iframe>
+                  );
+                }
+                return (
+                  <video 
+                    src={url} 
+                    controls 
+                    className="w-full h-full object-contain"
+                  />
+                );
+              })()}
             </div>
           ) : (
             <h2 className="text-4xl md:text-5xl font-black font-sans text-white uppercase tracking-wide leading-tight px-4 max-w-3xl drop-shadow-[0_2px_2px_rgba(0,0,0,0.8)]">

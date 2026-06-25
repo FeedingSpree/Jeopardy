@@ -1,6 +1,5 @@
 import { GameState } from '../types';
 import { Target, Bell } from 'lucide-react';
-import ReactPlayer from 'react-player';
 import { buzz } from '../lib/game';
 
 interface Props {
@@ -112,16 +111,28 @@ export function PlayerScreen({ gameState, playerId }: Props) {
           <div className="w-full shadow-2xl rounded-2xl bg-[#0B1953] border-4 border-[#1E3A8A] min-h-[250px] md:min-h-[300px] flex items-center justify-center text-center p-6 md:p-12 my-6 transform hover:scale-[1.01] transition-transform">
             {currentQ.videoUrl ? (
                <div className="w-full h-full my-4 rounded shadow-2xl overflow-hidden bg-black max-w-2xl aspect-video mx-auto border border-[#1E3A8A]">
-                 <ReactPlayer 
-                   {...{
-                     url: currentQ.videoUrl,
-                     playing: true,
-                     controls: true,
-                     width: "100%",
-                     height: "100%",
-                     className: "mx-auto"
-                   } as any}
-                 />
+                 {(() => {
+                   const url = currentQ.videoUrl;
+                   const ytMatch = url.match(/(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=))([^&?#]+)/);
+                   const ytId = ytMatch ? ytMatch[1] : null;
+                   if (ytId) {
+                     return (
+                       <iframe
+                         className="w-full h-full"
+                         src={`https://www.youtube.com/embed/${ytId}`}
+                         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                         allowFullScreen
+                       ></iframe>
+                     );
+                   }
+                   return (
+                     <video 
+                       src={url} 
+                       controls 
+                       className="w-full h-full object-contain"
+                     />
+                   );
+                 })()}
                </div>
             ) : (
                <h2 className="text-3xl md:text-5xl font-black text-white font-sans tracking-wide uppercase drop-shadow-[0_2px_2px_rgba(0,0,0,0.8)] leading-tight md:leading-snug">
