@@ -50,6 +50,10 @@ export const startGame = async () => {
   await updateDoc(gameDocRef, { status: 'board' });
 };
 
+export const editBoard = async () => {
+  await updateDoc(gameDocRef, { status: 'setup' });
+};
+
 export const openQuestion = async (questionId: string) => {
   await updateDoc(gameDocRef, { 
     status: 'question',

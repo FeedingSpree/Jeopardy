@@ -1,7 +1,7 @@
 import { GameState, Category } from '../types';
 import { motion } from 'motion/react';
 import { Users } from 'lucide-react';
-import { openQuestion, resetGame } from '../lib/game';
+import { openQuestion, resetGame, editBoard } from '../lib/game';
 
 interface Props {
   gameState: GameState;
@@ -26,6 +26,12 @@ export function HostBoard({ gameState, onLeaveHost }: Props) {
           <h1 className="text-2xl font-black text-[#FFD700] tracking-tighter">PRO JEOPARDY <span className="text-white font-normal opacity-50">|</span> HOST CONSOLE</h1>
         </div>
         <div className="flex gap-4 items-center">
+          <button 
+            onClick={editBoard}
+            className="px-4 py-1.5 border border-blue-500/30 text-blue-400 hover:bg-blue-500/10 rounded-md text-sm font-bold uppercase"
+          >
+            Edit Board
+          </button>
           <button 
             onClick={onLeaveHost}
             className="px-4 py-1.5 border border-red-500/30 text-red-400 hover:bg-red-500/10 rounded-md text-sm font-bold uppercase"
